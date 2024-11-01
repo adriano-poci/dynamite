@@ -1453,7 +1453,7 @@ contains
                     if (orbweight(orboffset) > 0.0_dp .and. orb_qualify == 1) then
 
                         ! add the total light and flip sign of vx,vy,vz
-                        ! (light,x,y,z,vx,vy,vz,xv2,vy2,vz2,vxvy,vyvz,vzvx)
+                        ! (light,x,y,z,vx,vy,vz,vx2,vy2,vz2,vxvy,vyvz,vzvx)
                         quad_store(1, :, :, :) = quad_store(1, :, :, :) &
                                                  + orbweight(orboffset)*quad_light(1, :, :, :)
                         quad_store(2, :, :, :) = quad_store(2, :, :, :) &
@@ -1514,7 +1514,7 @@ contains
 
 ! normalize quad_light
         where (quad_store(1, :, :, :) /= 0.0_dp)
-!  !  (light,x,y,z,vx,vy,vz,xv2,vy2,vz2,vxvy,vyvz,vzvx)
+!  !  (light,x,y,z,vx,vy,vz,vx2,vy2,vz2,vxvy,vyvz,vzvx)
             quad_store(2, :, :, :) = quad_store(2, :, :, :)/quad_store(1, :, :, :)/conversion_factor
             quad_store(3, :, :, :) = quad_store(3, :, :, :)/quad_store(1, :, :, :)/conversion_factor
             quad_store(4, :, :, :) = quad_store(4, :, :, :)/quad_store(1, :, :, :)/conversion_factor
@@ -1564,12 +1564,12 @@ contains
         write (unit=30, fmt=*) "radius boundaries in arcsec"
         write (unit=30, fmt="(30ES13.5E3)") quad_lr/conversion_factor
         write (unit=30, fmt="(A120)") 'phi,theta,r,mgemass,fitmass,errmass,x,y,z '
-        write (unit=30, fmt="(A120)") '(in arcsec),vx,vy,vz,xv2,vy2,vz2,vxvy,vyvz,vzvx,orbit long, orbit short,boxes'
+        write (unit=30, fmt="(A120)") '(in arcsec),vx,vy,vz,vx2,vy2,vz2,vxvy,vyvz,vzvx,orbit long, orbit short,boxes'
 
         do i = 1, sph1
             do j = 1, sth1
                 do k = 1, slr1
-                    !  (light,x,y,z,vx,vy,vz,xv2,vy2,vz2,vxvy,vyvz,vzvx)
+                    !  (light,x,y,z,vx,vy,vz,vx2,vy2,vz2,vxvy,vyvz,vzvx)
                     write (unit=30, fmt="(3i8,30ES13.5E3)") i, j, k, intrinsicmass(i, j, k), &
                         quad_store(1, i, j, k), intrinsicmass(i, j, k)*intrmasserror, &
                         (quad_store(l, i, j, k), l=2, smom1)
