@@ -537,17 +537,17 @@ contains
         write (unit=hdl) orbit, E1, I2, I3, totalnotregularizable
         write (unit=hdl) integrator_orbittypes(:)
 
-        write (unit=30, fmt="(25es13.5)") integrator_moments(:, :)
+        write (unit=30, fmt="(25ES18.5E3)") integrator_moments(:, :)
     end subroutine integrator_write
 
     !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     subroutine ini_integ()
         !----------------------------------------------------------------------
-        character(len=30) :: infil
+        character(len=256) :: infil
         integer(kind=i4b) :: i
 
         print *, "  * Give name of file with begin conditions"
-        read (unit=*, fmt="(a30)") infil
+        read (unit=*, fmt="(a256)") infil
         print *, "   ", infil
         open (unit=31, file=infil, status="OLD", action="read", position="rewind")
 
@@ -562,7 +562,7 @@ contains
             allocate (xini(i), yini(i), zini(i), vxini(i), vyini(i), vzini(i), rcirc(i), &
                       tcirc(i), vcirc(i), gEner(i), gI2(i), gI3(i), regurizable(i))
 
-        read (unit=31, fmt="(3I5,9ES30.10,I4)") (gener(i), gi2(i), gi3(i), xini(i), &
+        read (unit=31, fmt="(3I5,9ES30.10E3,I4)") (gener(i), gi2(i), gi3(i), xini(i), &
                                                  yini(i), zini(i), vxini(i), vyini(i), vzini(i), rcirc(i), tcirc(i), &
                                                  vcirc(i), regurizable(i), &
                                                  i=1, nEner*nI2*nI3)
@@ -1570,7 +1570,7 @@ contains
         use psf, only: psf_n
         !----------------------------------------------------------------------
         integer(kind=i4b)  :: i, handle = 11
-        character(len=80) :: file, string
+        character(len=256) :: file,string
         print *, "  **Aperture setup module"
         print *, "  * How many different apertures?  :"
         read *, aperture_n
@@ -1583,13 +1583,13 @@ contains
 
         do i = 1, aperture_n
             print *, "  * What's the filename of the ", i, " aperture file ? :"
-            read *, file
+            read (unit=*, fmt="(a256)") file
             print *, "  * Reading ", file
 
             open (unit=handle, file=file, action="read", status="old"&
                  &, position="rewind")
             print *, "  * Checking type."
-            read (unit=handle, fmt=*) string
+            read (unit=handle, fmt="(a256)") string
 
             select case (string)
             case ("#counterrotation_polygon_aperturefile_version_1")
@@ -1761,7 +1761,7 @@ contains
         use aperture, only: aperture_n
         !----------------------------------------------------------------------
         integer(kind=i4b) :: i
-        character(len=80) :: string
+        character(len=256) :: string
         print *, "  * Starting Binning setup"
         allocate (bin_type(aperture_n))
         allocate (bin_max(aperture_n))
@@ -1786,7 +1786,7 @@ contains
             if (bin_type(i) == 1) then
                 print *, "  * Aperture: ", i
                 print *, "  * Give the filename of the binning file."
-                read *, string
+                read (unit=*, fmt="(a256)") string
                 print *, "  * Opening: ", string
                 open (unit=30 + i, file=string, action="read", status="old"&
                   &, position="rewind")
@@ -2411,8 +2411,8 @@ module output
     private
 
     integer(kind=i4b), private :: out_handle = 0_i4b
-    character(len=80), public  :: out_file
-    character(len=84), private :: out_tmp_file
+    character(len=256), public  :: out_file
+    character(len=256), private :: out_tmp_file
 
     public :: output_setup
 
@@ -2437,7 +2437,7 @@ contains
 
         print *, "  ** Setting up output module"
         print *, "  * Give the name of the histogram outputfile:"
-        read (unit=*, fmt="(a80)"), out_file
+        read (unit=*, fmt="(a256)"), out_file
 
         out_file = adjustl(out_file)
         print *, out_file
@@ -2599,7 +2599,7 @@ contains
         use psf, only: psf_setup
         use output, only: output_setup
         !----------------------------------------------------------------------
-        character(len=80) :: string
+        character(len=256) :: string
         print *, "  ** Start Setup"
         print *, "  * Give setup version info: [U for unspecified]"
         read *, string

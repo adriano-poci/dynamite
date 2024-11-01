@@ -230,7 +230,7 @@ contains
                     ! if this is the last irregular energy do not regularize
                     if (maxval(irregular(:)) .eq. i) noreg = 1
 
-                    write (unit=31, fmt="(3I5,9ES30.10,I4)") i, j, k, startpos, rcirc(i), tcirc(i), vcirc(i), noreg
+                    write (unit=31, fmt="(3I5,9ES30.10E3,I4)") i, j, k, startpos, rcirc(i), tcirc(i), vcirc(i), noreg
                 end do
             end do
         end do
@@ -263,7 +263,7 @@ contains
                     ! if this is the last irregular energy do not regularize
                     if (maxval(irregular(:)) .eq. i)  noreg=1
                     
-                    write (unit=31, fmt="(3I5,9ES30.10,I4)") i,j,k,startpos2,rcirc(i),tcirc(i),vcirc(i),noreg   
+                    write (unit=31, fmt="(3I5,9ES30.10E3,I4)") i,j,k,startpos2,rcirc(i),tcirc(i),vcirc(i),noreg   
                  enddo
               enddo
            enddo
@@ -295,7 +295,7 @@ contains
                     xp = Rorbit*sin(theta)*cos(phi)   ! x
                     yp = Rorbit*sin(theta)*sin(phi)   ! y
                     zp = Rorbit*cos(theta)            ! z
-                    write (unit=31, fmt="(3I5,9ES30.10,I4)") i, j, k, xp, yp, zp, 0.0_dp &
+                    write (unit=31, fmt="(3I5,9ES30.10E3,I4)") i, j, k, xp, yp, zp, 0.0_dp &
                         , 0.0_dp, 0.0_dp, rcirc(i), tcirc(i), vcirc(i), 0
                 end do
             end do

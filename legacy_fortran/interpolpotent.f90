@@ -203,7 +203,7 @@ contains
             maxdiff = max(maxdiff, diff)
             meandiff = meandiff + diff
             if (diff > 1.0e-3) then
-                write (unit=*, fmt="(1es15.3,4f15.3,4e15.3)"), diff, theta*180/pi_d, phi*180/pi_d, log10(r), rlogminp, &
+                write (unit=*, fmt="(1ES15.3E3,4f15.3,4ES15.3E3)"), diff, theta*180/pi_d, phi*180/pi_d, log10(r), rlogminp, &
                     (vx - t1)/t1, (vy - t2)/t2, (vz - t3)/t3, len
             end if
         end do

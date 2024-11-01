@@ -368,7 +368,7 @@ contains
                ! Compute and store start energy at begin point
                call computer_energy(YY,Enjo)
 
-               write (unit=32, fmt="(25es13.5)")  Enjo, r_mean, lz2, vca, Svr, Svt, Svz
+               write (unit=32, fmt="(25ES13.5E3)")  Enjo, r_mean, lz2, vca, Svr, Svt, Svz
             endif
             ! end write orbit information
 
@@ -629,17 +629,17 @@ contains
         write (unit=hdl) orbit, E1, I2, I3, totalnotregularizable
         write (unit=hdl) integrator_orbittypes(:)
 
-        write (unit=30, fmt="(25es13.5)") integrator_moments(:, :)
+        write (unit=30, fmt="(25ES13.5E3)") integrator_moments(:, :)
     end subroutine integrator_write
 
     !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     subroutine ini_integ()
         !----------------------------------------------------------------------
-        character(len=30) :: infil
+        character(len=256) :: infil
         integer(kind=i4b) :: i
 
         print *, "  * Give name of file with begin conditions"
-        read (unit=*, fmt="(a30)") infil
+        read (unit=*, fmt="(a256)") infil
         print *, "   ", infil
         open (unit=31, file=infil, status="OLD", action="read", position="rewind")
 
@@ -654,7 +654,7 @@ contains
             allocate (xini(i), yini(i), zini(i), vxini(i), vyini(i), vzini(i), rcirc(i), &
                       tcirc(i), vcirc(i), gEner(i), gI2(i), gI3(i), regurizable(i))
 
-        read (unit=31, fmt="(3I5,9ES30.10,I4)") (gener(i), gi2(i), gi3(i), xini(i), &
+        read (unit=31, fmt="(3I5,9ES30.10E3,I4)") (gener(i), gi2(i), gi3(i), xini(i), &
                                                  yini(i), zini(i), vxini(i), vyini(i), &
                                                  vzini(i), rcirc(i), tcirc(i), &
                                                  vcirc(i), regurizable(i), &
@@ -2618,7 +2618,7 @@ module output
     private
 
     integer(kind=i4b), private :: out_handle = 0_i4b
-    character(len=80), public  :: out_file
+    character(len=256), public  :: out_file
     character(len=84), private :: out_tmp_file
 
     public :: output_setup
@@ -2644,7 +2644,7 @@ contains
 
         print *, "  ** Setting up output module"
         print *, "  * Give the name of the histogram outputfile:"
-        read (unit=*, fmt="(a80)"), out_file
+        read (unit=*, fmt="(a256)"), out_file
 
         out_file = adjustl(out_file)
         print *, out_file

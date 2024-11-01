@@ -289,7 +289,7 @@ contains
         open (unit=28, file=string, action="write", status="new")
         write (unit=28, fmt="(i5)") global_n_apermass
         do i = 1, global_n_apermass
-            write (unit=28, fmt="(i5,es20.12)") i, global_apermass(i)
+            write (unit=28, fmt="(i5,ES20.12E3)") i, global_apermass(i)
         end do
         close (unit=28)
     end subroutine write_apermass

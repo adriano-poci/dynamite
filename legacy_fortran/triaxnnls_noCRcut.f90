@@ -748,7 +748,7 @@ contains
         ! write some info to screen
 
         print *, "NNLS fit performed"
-        write (unit=*, fmt="(es20.12,i6)") rmsresid, mode
+        write (unit=*, fmt="(ES20.12E3,i6)") rmsresid, mode
         print *, " "
 
         print *, "Restoring nonzero ORBMAT from file to memory..."
@@ -1217,7 +1217,7 @@ contains
 
         ! write some info to screen
         print *, "NNLS fit performed"
-        write (unit=*, fmt="(es20.12,i6)") rmsresid, mode
+        write (unit=*, fmt="(ES20.12E3,i6)") rmsresid, mode
         print *, " "
 
         orbmat(:, :) = orbtmp(:, :)
@@ -1245,18 +1245,18 @@ contains
               action="write")
 
         chimass = sum(((conpr(2:massconstr + 1) - con(2:massconstr + 1))/econ(2:massconstr + 1))**2)
-        write (unit=*, fmt="(A6,i6,2es20.6,f20.6)") "mass", &
+        write (unit=*, fmt="(A6,i6,2ES20.6E3,f20.6)") "mass", &
             massconstr, chimass, sqrt(chimass), chimass/massconstr
-        write (unit=30, fmt="(A6,i6,2es20.6,f20.6)") "mass", &
+        write (unit=30, fmt="(A6,i6,2ES20.6E3,f20.6)") "mass", &
             massconstr, chimass, sqrt(chimass), chimass/massconstr
 
         do i = 0, hermax
             b = massconstr + 1 + i*nconstr + 1
             e = massconstr + 1 + (i + 1)*nconstr
             parchi = sum(((conpr(b:e) - con(b:e))/econ(b:e))**2)
-            write (unit=*, fmt="(2i6,2es20.6,f20.6)") i, &
+            write (unit=*, fmt="(2i6,2ES20.6E3,f20.6)") i, &
                 nconstr, parchi, sqrt(parchi), parchi/nconstr
-            write (unit=30, fmt="(2i6,2es20.6,f20.6)") i, &
+            write (unit=30, fmt="(2i6,2ES20.6E3,f20.6)") i, &
                 nconstr, parchi, sqrt(parchi), parchi/nconstr
 
         end do
@@ -1267,32 +1267,32 @@ contains
         chireg = 0.0_dp
         if (use_reg) chireg = sum(((conpr(b:e) - con(b:e))/econ(b:e))**2)
 
-        write (unit=*, fmt="(A6,i6,2es20.6,f20.6)") "reg", &
+        write (unit=*, fmt="(A6,i6,2ES20.6E3,f20.6)") "reg", &
             e - b + 1, chireg, sqrt(chireg), chireg/(e - b + 1)
-        write (unit=30, fmt="(A6,i6,2es20.6,f20.6)") "reg", &
+        write (unit=30, fmt="(A6,i6,2ES20.6E3,f20.6)") "reg", &
             e - b + 1, chireg, sqrt(chireg), chireg/(e - b + 1)
 
         !! Total mass eq 1.0 constraint
         !chitotmass = (conpr(convecl)-con(convecl) / econ(convecl))**2
-        !write (unit=*,fmt="(A7,i6,2es15.6,f15.6)") "totmass",&
+        !write (unit=*,fmt="(A7,i6,2ES15.6E3,f15.6)") "totmass",&
         !     1,chitotmass,sqrt(chitotmass),chitotmass/nconstr
-        !write (unit=30,fmt="(A7,i6,2es15.6,f15.6)") "totmass",&
+        !write (unit=30,fmt="(A7,i6,2ES15.6E3,f15.6)") "totmass",&
         !     1,chitotmass,sqrt(chitotmass),chitotmass/nconstr
 
         ! Total chi2
         chisq = sum(((conpr(2:convecl) - con(2:convecl))/econ(2:convecl))**2)
-        write (unit=*, fmt="(A8,i6,2es20.6,f20.6)") "total", &
+        write (unit=*, fmt="(A8,i6,2ES20.6E3,f20.6)") "total", &
             size(con), chisq, sqrt(chisq), chisq/(size(con))
-        write (unit=30, fmt="(A8,i6,2es20.6,f20.6)") "total", &
+        write (unit=30, fmt="(A8,i6,2ES20.6E3,f20.6)") "total", &
             size(con), chisq, sqrt(chisq), chisq/(size(con))
 
         ! kinematical chi2
         b = massconstr + 1 + 1*nconstr + 1
         e = massconstr + 1 + (hermax + 1)*nconstr
         chisq = sum(((conpr(b:e) - con(b:e))/econ(b:e))**2)
-        write (unit=*, fmt="(A6,i6,2es20.6,f20.6)") "kin", &
+        write (unit=*, fmt="(A6,i6,2ES20.6E3,f20.6)") "kin", &
             e - b + 1, chisq, sqrt(chisq), chisq/(e - b + 1)
-        write (unit=30, fmt="(A6,i6,2es20.6,f20.6)") "kin", &
+        write (unit=30, fmt="(A6,i6,2ES20.6E3,f20.6)") "kin", &
             e - b + 1, chisq, sqrt(chisq), chisq/(e - b + 1)
 
         close (unit=30)
@@ -1304,7 +1304,7 @@ contains
               action="write")
         write (unit=30, fmt=*) size(con)
         do i = 1, size(con)
-            write (unit=30, fmt="(i6,3es15.6)") i, con(i), conpr(i), econ(i)
+            write (unit=30, fmt="(i6,3ES15.6E3)") i, con(i), conpr(i), econ(i)
         end do
         close (unit=30)
 
@@ -1324,7 +1324,7 @@ contains
         !     action="write")
         !write (unit=30, fmt=*) nconstr,hermax
         !do i=1,nconstr
-        !   write (unit=30, fmt="(i8,30es13.5)") i,0.0_dp,0.0_dp,&
+        !   write (unit=30, fmt="(i8,30ES13.5E3)") i,0.0_dp,0.0_dp,&
         !        (modvel(i,j),velmom(i,j),dvelmom(i,j),j=1,hermax)
         !end do
         !close (unit=30)
@@ -1335,7 +1335,7 @@ contains
               action="write")
         write (unit=30, fmt=*) orbitsinfit
         do i = 1, orbitsinfit
-            write (unit=30, fmt="(6i8,es13.5,es13.5,es13.5,es13.5,es13.5,es13.5,6i8)") i, &
+            write (unit=30, fmt="(6i8,ES13.5E3,ES13.5E3,ES13.5E3,ES13.5E3,ES13.5E3,ES13.5E3,6i8)") i, &
                 orbint(1:4, i), orbtype(i), orbweight(i), lcut(i)
         end do
 
@@ -1563,11 +1563,11 @@ contains
         write (unit=30, fmt=*) "smom1,sph1,sth1,slr1"
         write (unit=30, fmt=*) smom1, sph1, sth1, slr1
         write (unit=30, fmt=*) "phi boundaries"
-        write (unit=30, fmt="(30es13.5)") quad_lph
+        write (unit=30, fmt="(30ES13.5E3)") quad_lph
         write (unit=30, fmt=*) "theta boundaries"
-        write (unit=30, fmt="(30es13.5)") quad_lth
+        write (unit=30, fmt="(30ES13.5E3)") quad_lth
         write (unit=30, fmt=*) "radius boundaries in arcsec"
-        write (unit=30, fmt="(30es13.5)") quad_lr/conversion_factor
+        write (unit=30, fmt="(30ES13.5E3)") quad_lr/conversion_factor
         write (unit=30, fmt="(A120)") 'phi,theta,r,mgemass,fitmass,errmass,x,y,z '
         write (unit=30, fmt="(A120)") '(in arcsec),vx,vy,vz,xv2,vy2,vz2,vxvy,vyvz,vzvx,orbit long, orbit short,boxes'
 
@@ -1575,7 +1575,7 @@ contains
             do j = 1, sth1
                 do k = 1, slr1
                     !  (light,x,y,z,vx,vy,vz,xv2,vy2,vz2,vxvy,vyvz,vzvx)
-                    write (unit=30, fmt="(3i8,30es13.5)") i, j, k, intrinsicmass(i, j, k), &
+                    write (unit=30, fmt="(3i8,30ES13.5E3)") i, j, k, intrinsicmass(i, j, k), &
                         quad_store(1, i, j, k), intrinsicmass(i, j, k)*intrmasserror, &
                         (quad_store(l, i, j, k), l=2, smom1)
                 end do
@@ -1631,15 +1631,15 @@ contains
               action="write")
         write (unit=30, fmt=*) nconstr, hermax
         do i = 1, nconstr
-            write (unit=30, fmt="(i8,30es13.5)") i, apermass(i), fitapermass(i), &
+            write (unit=30, fmt="(i8,30ES13.5E3)") i, apermass(i), fitapermass(i), &
                 (modvel(i, j), velmom(i, j), dvelmom(i, j), j=1, hermax)
         end do
         close (unit=30)
 
         open (unit=30, file=trim(outroot_kinem)//"_aphist.out", status="replace", &
               action="write")
-        write (unit=30, fmt="(2i8,es13.5)") nvhist(1), nconstr, dvhist(1)
-        write (unit=30, fmt="(6es13.5)") ((velstore(i, j), i=-nvhist(1), nvhist(1)), j=1, nconstr)
+        write (unit=30, fmt="(2i8,ES13.5E3)") nvhist(1), nconstr, dvhist(1)
+        write (unit=30, fmt="(6ES13.5E3)") ((velstore(i, j), i=-nvhist(1), nvhist(1)), j=1, nconstr)
         close (unit=30)
 
         deallocate (velhist, veltmp, velstore)

@@ -66,8 +66,8 @@ contains
         open (unit=31, file=trim(outroot)//"_apermass.out", action="write", status="replace")
         write (unit=31, fmt="(i5)") nconstr
         do i = 1, nconstr
-            write (unit=31, fmt="(i5,es20.12)") i, sum(velhist(:, i))
-            !write (unit=31, fmt="(es20.12)") sum(velhist(:,i))
+            write (unit=31, fmt="(i5,ES20.12E3)") i, sum(velhist(:, i))
+            !write (unit=31, fmt="(ES20.12E3)") sum(velhist(:,i))
         end do
         close (unit=31)
 
@@ -90,18 +90,18 @@ contains
         write (unit=30, fmt=*) "smom,sph,sth,slr"
         write (unit=30, fmt=*) smom, sph, sth, slr
         write (unit=30, fmt=*) "phi boundaries"
-        write (unit=30, fmt="(30es13.5)") quad_lph
+        write (unit=30, fmt="(30ES18.5E3)") quad_lph
         write (unit=30, fmt=*) "theta boundaries"
-        write (unit=30, fmt="(30es13.5)") quad_lth
+        write (unit=30, fmt="(30ES18.5E3)") quad_lth
         write (unit=30, fmt=*) "radius boundaries in arcsec"
-        write (unit=30, fmt="(30es13.5)") quad_lr/conversion_factor
+        write (unit=30, fmt="(30ES18.5E3)") quad_lr/conversion_factor
         write (unit=30, fmt=*) "phi,theta,r, 0.0, mass,0.0,x,y,z (in arcsec),vx,vy,vz,xv2,vy2,vz2,vxvy,vyvz,vzvx"
 
         do i = 1, sph
             do j = 1, sth
                 do k = 1, slr
                     !  (light,x,y,z,vx,vy,vz,xv2,vy2,vz2,vxvy,vyvz,vzvx)
-                    write (unit=30, fmt="(3i8,30es13.5)") i, j, k, 0.0_dp &
+                    write (unit=30, fmt="(3i8,30ES18.5E3)") i, j, k, 0.0_dp &
                         , quad_light(1, i, j, k), 0.0_dp &
                         , (quad_light(l, i, j, k), l=2, smom)
                 end do
@@ -111,8 +111,8 @@ contains
 
         open (unit=30, file=trim(outroot)//"_aphist.out", status="replace", &
               action="write")
-        write (unit=30, fmt="(2i8,es13.5)") nvhist, nconstr, histwidth
-        write (unit=30, fmt="(6es13.5)") ((velhist(i, j), i=-nvhist, nvhist), j=1, nconstr)
+        write (unit=30, fmt="(2i8,ES18.5E3)") nvhist, nconstr, histwidth
+        write (unit=30, fmt="(6ES18.5E3)") ((velhist(i, j), i=-nvhist, nvhist), j=1, nconstr)
         close (unit=30)
 
         deallocate (velhist, veltmp1)
@@ -146,7 +146,7 @@ contains
         use psf, only: psf_setup
         use output, only: output_setup
         !----------------------------------------------------------------------
-        character(len=80) :: string
+        character(len=256) :: string
         print *, "  ** Start Orbit combine Setup"
         print *, "  * Give setup version info: [U for unspecified]"
         read *, string
@@ -172,21 +172,21 @@ contains
 
     subroutine read_orbsol()
         use integrator, only: integrator_points, integrator_dithering
-        character(len=30) :: infil
+        character(len=256) :: infil
         integer(kind=i4b)  :: i, j, norb, nparticles
         real(kind=dp)  :: precision, t1, t2
 
         real(kind=dp), dimension(:), allocatable :: orbwght
 
         print *, "  * Give name of file with the orbitsolution (*_orb.out)"
-        read (unit=*, fmt="(a30)") infil
+        read (unit=*, fmt="(a256)") infil
         print *, "   ", infil
 
         open (unit=40, file=infil, status="OLD", action="read", position="rewind")
         read (unit=40, fmt=*) norb
         allocate (orbinfo(6, norb), orbwght(norb))
         do i = 1, norb
-            read (unit=40, fmt="(6i8,es13.5)") j, orbinfo(1, i), orbinfo(2, i), &
+            read (unit=40, fmt="(6i8,ES18.9E3)") j, orbinfo(1, i), orbinfo(2, i), &
                 orbinfo(3, i), orbinfo(4, i), orbinfo(5, i), orbwght(i)
             !orbint(1:4,i),orbtype(i),orbweight(i)
         end do
@@ -221,21 +221,21 @@ contains
 
     subroutine read_orbsol_relative_precision()
         use integrator, only: integrator_points, integrator_dithering
-        character(len=30) :: infil
+        character(len=256) :: infil
         integer(kind=i4b)  :: i, j, norb
         real(kind=dp)  :: precision, t1, t2, maxpre
 
         real(kind=dp), dimension(:), allocatable :: orbwght
 
         print *, "  * Give name of file with the orbitsolution (*_orb.out)"
-        read (unit=*, fmt="(a30)") infil
+        read (unit=*, fmt="(a256)") infil
         print *, "   ", infil
 
         open (unit=40, file=infil, status="OLD", action="read", position="rewind")
         read (unit=40, fmt=*) norb
         allocate (orbinfo(6, norb), orbwght(norb))
         do i = 1, norb
-            read (unit=40, fmt="(6i8,es13.5)") j, orbinfo(1, i), orbinfo(2, i), &
+            read (unit=40, fmt="(6i8,ES18.5E3)") j, orbinfo(1, i), orbinfo(2, i), &
                 orbinfo(3, i), orbinfo(4, i), orbinfo(5, i), orbwght(i)
             !orbint(1:4,i),orbtype(i),orbweight(i)
         end do
@@ -375,7 +375,7 @@ contains
                     first = .false.
                     if (done .or. alldone) exit
                     do i = 1, integrator_points
-                        !           write (unit=33, fmt="(6es20.12)") pos(i,:),vel(i,:)
+                        !           write (unit=33, fmt="(6ES20.12E3)") pos(i,:),vel(i,:)
                     end do
                     call qgrid_store(pos(:, :), vel(:, :), type)
                     first = .true.
